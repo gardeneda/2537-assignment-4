@@ -170,6 +170,8 @@ function gameSession(difficulty) {
 		if (frontFace1.src === frontFace2.src) {
 			console.log("match");
 			matched++;
+			frontFace1.parentElement.classList.add("matched");
+			frontFace2.parentElement.classList.add("matched");
 			document.querySelector("#current-match").textContent = matched;
 			card1.removeEventListener("click", cardClickHandler);
 			card2.removeEventListener("click", cardClickHandler);
@@ -207,16 +209,17 @@ function gameSession(difficulty) {
 		time++;
 		document.getElementById("time-count").textContent = maxTime - time;
 
-		if (time % 40 == 0 && time != 0) {
+		// Power Up
+		if (time % 10 == 0 && time != 0) {
 			alert("Power up!");
 			setTimeout(() => {
-				cards.forEach((card) => {
+				document.querySelectorAll("div:not(.matched)").forEach( card => {
 					flipCard(card);
-				});
+				})
 			}, 1000);
-			cards.forEach((card) => {
+			document.querySelectorAll("div:not(.matched)").forEach( card => {
 				flipCard(card);
-			});
+			})
 		}
 
 		if (time >= maxTime) {
