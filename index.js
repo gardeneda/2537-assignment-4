@@ -3,6 +3,9 @@ const MEDIUM = 6;
 const HARD = 12;
 const TOTAL_POKEMON = 1000;
 
+// ###############################################
+// POKEMON CARD SETUPS ###########################
+
 async function fetchRandomPokemon() {
 	const response = await axios.get(
 		`https://pokeapi.co/api/v2/pokemon?limit=${TOTAL_POKEMON}`
@@ -32,6 +35,75 @@ async function getRandomPokemon(number, pokemons) {
 	return arr;
 }
 
+async function initPokemonCards(difficulty, pokemons) {
+	const pokemonList = await getRandomPokemon(difficulty, pokemons);
+	const finalPokemon = shuffle(pokemonList);
+
+	const template = document.querySelector(".card-template");
+	const destination = document.querySelector("#pokemon-container");
+
+	for (let i = 0; i < finalPokemon.length; i++) {
+		const clone = template.content.cloneNode(true);
+		clone.querySelector(".front-face").src =
+			finalPokemon[i].sprites.other["official-artwork"].front_default;
+		destination.appendChild(clone);
+	}
+
+	addFlip();
+}
+
+function addFlip() {
+	const cardArr = document.querySelectorAll(".gamecard");
+	cardArr.forEach((card) => {
+		card.addEventListener("click", () => {
+			console.log("This code is run.");
+			card.classList.toggle("flip");
+		});
+	});
+}
+
+function createPairsPokemon(pokemonList) {
+	const arr = [];
+	pokemonList.forEach((pokemon) => {
+		arr.push(pokemon);
+		arr.push(pokemon);
+	});
+
+	return arr;
+}
+
+function shuffle(pokemonList) {
+	const arr = createPairsPokemon(pokemonList);
+	for (let i = 0; i < arr.length / 2; i++) {
+		const random = Math.floor(Math.random() * arr.length);
+		const temp = arr[i];
+		arr[i] = arr[random];
+		arr[random] = temp;
+	}
+
+	return arr;
+}
+
+// ###############################################
+// INITIATING DIFFICULTY #########################
+
+function initDifficulty() {
+	const allDifficulty = document.querySelectorAll('input[type="radio"]');
+	allDifficulty.forEach((btn) => {
+		btn.addEventListener("change", () => {
+			document.querySelectorAll('.active').forEach(doc => {
+				doc.classList.remove('active');
+			})
+			btn.parentElement.classList.toggle("active");
+		});
+	});
+}
+
+// ###############################################
+// INITIATING GAME CONTROLLER ####################
+
+function resetGame() {}
+
 function initButtons() {
 	const reset = document.getElementById("reset");
 	reset.addEventListener("click", resetGame);
@@ -39,40 +111,19 @@ function initButtons() {
 	start.addEventListener("click", startGame);
 }
 
-async function initPokemonCards(difficulty, pokemons) {
-  const pokemonList = await getRandomPokemon(difficulty, pokemons);
-  console.log(pokemonList);
-	const template = document.querySelector(".card-template");
-	const destination = document.querySelector("#pokemon-container");
-
-	for (let i = 0; i < pokemonList.length; i++) {
-		const clone = template.content.cloneNode(true);
-		clone.querySelector(".front-face").src = pokemonList[i].sprites.other['official-artwork'].front_default;
-		destination.appendChild(clone);
-	}
-}
-
-function resetGame() {}
-
 function startGame() {
-
+	const difficulty = document.querySelector('.active').childNodes[1].value;
+	console.log(difficulty);
+	game();
 }
 
-function addFlip() {
-  const cardArr = document.querySelectorAll('.card');
-  cardArr.forEach(card => {
-    card.addEventListener('click', () => {
-      console.log("This code is run.");
-      card.classList.toggle('flip');
-    })
-  })
-}
+function game() {}
 
 async function init() {
 	const pokemonList = await fetchRandomPokemon();
-  await initPokemonCards(3, pokemonList);
-  initButtons();
-  addFlip();
+	await initPokemonCards(HARD, pokemonList);
+	initButtons();
+	initDifficulty();
 }
 
 init();
