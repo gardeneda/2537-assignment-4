@@ -24,19 +24,33 @@
         <!-- AXIOS -->
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-        <!--  -->
+        <!-- JQUERY -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		
+		<!-- Custom CSS -->
+		<link rel="stylesheet" href="./index.css" />
 	</head>
 	<body>
         <div class="main-container">
             <div class="difficulty-container">
-                <button id="easy-difficulty" class="btn">Easy</button>
-                <button id="medium-difficulty" class="btn">Medium</button>
-                <button id="" class="btn">Hard</button>
+                <button id="easy-difficulty" class="btn btn-primary">Easy</button>
+                <button id="medium-difficulty" class="btn btn-primary">Medium</button>
+                <button id="hard-difficulty" class="btn btn-primary">Hard</button>
             </div>
             <div class="game-controller-container">
-                <button id="reset" class="btn">Reset</button>
-                <button id="start" class="btn">Start</button>
+                <button id="reset" class="btn btn-primary">Reset</button>
+                <button id="start" class="btn btn-primary">Start</button>
             </div>
+			<div id="pokemon-container">
+
+			</div>
         </div>
+		<template class="card-template">
+			<div class="card">
+				<img class="front-face"/>
+				<img class="back-face" src="back.webp"/>
+			</div>
+		</template>
+		<script src="./index.js"></script>
     </body>
 </html>
