@@ -3,8 +3,7 @@ body {
 }
 
 #pokemon-container {
-	border: 2px tomato solid;
-	width: 1200px;
+	width: 800px;
 	height: 800px;
 	margin: auto;
 	display: flex;
@@ -43,4 +42,22 @@ input[type=radio] {
     position: fixed;
     opacity: 0;
     pointer-events: none;
+}
+
+.hidden {
+	display: none !important;
+}
+
+.controller {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: gray;
+}
+
+#statistics {
+	width: 75%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }

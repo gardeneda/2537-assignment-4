@@ -104,22 +104,26 @@ function initDifficulty() {
 // ###############################################
 // INITIATING GAME CONTROLLER ####################
 
-function resetGame(difficulty) {
-	const btn = document.getElementById("reset");
-	btn.addEventListener("click", () => {});
-}
-
 function initButtons() {
-	const reset = document.getElementById("reset");
-	reset.addEventListener("click", resetGame);
 	const start = document.getElementById("start");
 	start.addEventListener("click", startGame);
+	const dark = document.getElementById("dark");
+	dark.addEventListener("click", () => {
+		document.querySelector('body').classList.add("bg-dark");
+		document.querySelector('.statistics').classList.add("text-white");
+	});
+	const light = document.getElementById("light");
+	light.addEventListener("click", () => {
+		document.querySelector('body').classList.remove("bg-dark");
+		document.querySelector('.statistics').classList.remove("text-white");
+	});
 }
 
 // ###############################################
 // STARTING THE GAME LOGIC #######################
 
 function startGame() {
+	document.getElementById("pokemon-container").innerHTML = "";
 	const difficulty = document.querySelector(".active").childNodes[1].value;
 	game(difficulty);
 }
@@ -145,13 +149,15 @@ async function game(difficulty) {
 }
 
 function gameSession(difficulty) {
-	console.log("This thing started");
 	let matched = 0;
 	const maxTime = getMaxTime(difficulty);
-	console.log(maxTime);
 	let time = 0;
 	let flippedCard = null;
 	let numClicks = 0;
+
+	document.querySelector(".statistics").classList.remove("hidden");
+	document.querySelector("#start").classList.add("hidden");
+	document.getElementById("max-match").textContent = difficulty;
 
 	const flipCard = (card) => {
 		card.classList.toggle("flip");
@@ -164,6 +170,7 @@ function gameSession(difficulty) {
 		if (frontFace1.src === frontFace2.src) {
 			console.log("match");
 			matched++;
+			document.querySelector("#current-match").textContent = matched;
 			card1.removeEventListener("click", cardClickHandler);
 			card2.removeEventListener("click", cardClickHandler);
 		} else {
@@ -178,6 +185,7 @@ function gameSession(difficulty) {
 
 	const cardClickHandler = (event) => {
 		numClicks++;
+		document.getElementById("click-count").textContent = Math.floor(numClicks / 2);
 		const currentCard = event.currentTarget;
 		if (currentCard === flippedCard) {
 			return; // Ignore clicks on the same card
@@ -197,22 +205,42 @@ function gameSession(difficulty) {
 
 	const interval = setInterval(() => {
 		time++;
-		document.getElementById("max-time").textContent = maxTime;
-		document.getElementById("time-count").textContent = time;
+		document.getElementById("time-count").textContent = maxTime - time;
 
-		if (matched >= difficulty || time >= maxTime) {
+		if (time % 40 == 0 && time != 0) {
+			alert("Power up!");
+			setTimeout(() => {
+				cards.forEach((card) => {
+					flipCard(card);
+				});
+			}, 1000);
+			cards.forEach((card) => {
+				flipCard(card);
+			});
+		}
+
+		if (time >= maxTime) {
 			clearInterval(interval);
 			cards.forEach((card) => {
 				card.removeEventListener("click", cardClickHandler);
 			});
+			alert("Time out. You lose!");
+		} else if (matched >= difficulty) {
+			clearInterval(interval);
+			cards.forEach((card) => {
+				card.removeEventListener("click", cardClickHandler);
+			});
+			alert("You win!");
 		}
 	}, 1000);
 
-	const test = () => {
-		console.log("Lol this a test.");
-	};
 
-	test;
+	document.getElementById("reset").addEventListener('click', () => {
+		document.querySelector('#pokemon-container').innerHTML = "";
+		document.getElementById("start").classList.remove("hidden");
+		document.querySelector(".statistics").classList.add("hidden");
+		clearInterval(interval);
+	})
 }
 
 function getMaxTime(difficulty) {

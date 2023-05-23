@@ -29,58 +29,83 @@
 
 		<!-- Custom CSS -->
 		<link rel="stylesheet" href="./index.css" />
+
+		<!-- Fontawesome -->
+		<script
+			src="https://kit.fontawesome.com/36e5d26d04.js"
+			crossorigin="anonymous"
+		></script>
 	</head>
 	<body>
 		<div class="main-container">
-			<div
-				id="difficulty"
-				class="btn-group btn-group-toggle m-3"
-				data-toggle="buttons"
-			>
-				<label class="btn btn-primary">
-					<input
-						type="radio"
-						value="easy"
-						name="mode-options"
-						id="easy"
-						autocomplete="off"
-					/>
-					Easy
-				</label>
-				<label class="btn btn-primary">
-					<input
-						type="radio"
-						value="medium"
-						name="mode-options"
-						id="medium"
-						autocomplete="off"
-					/>
-					Medium
-				</label>
-				<label class="btn btn-primary">
-					<input
-						type="radio"
-						value="hard"
-						name="mode-options"
-						id="hard"
-						autocomplete="off"
-					/>
-					Hard
-				</label>
+			<div class="controller">
+				<div class="themes">
+					<button id="dark" class="btn btn-dark">
+						<i class="fa-regular fa-moon"></i>
+						Dark Mode
+					</button>
+					<button id="light" class="btn btn-light">
+						<i class="fa-solid fa-sun"></i>
+						Light Mode
+					</button>
+				</div>
+				<div
+					id="difficulty"
+					class="btn-group btn-group-toggle m-3"
+					data-toggle="buttons"
+				>
+					<label class="btn btn-primary">
+						<input
+							type="radio"
+							value="easy"
+							name="mode-options"
+							id="easy"
+							autocomplete="off"
+						/>
+						Easy
+					</label>
+					<label class="btn btn-primary">
+						<input
+							type="radio"
+							value="medium"
+							name="mode-options"
+							id="medium"
+							autocomplete="off"
+						/>
+						Medium
+					</label>
+					<label class="btn btn-primary">
+						<input
+							type="radio"
+							value="hard"
+							name="mode-options"
+							id="hard"
+							autocomplete="off"
+						/>
+						Hard
+					</label>
+				</div>
+				<div class="game-controller-container">
+					<button id="reset" class="btn btn-primary">Reset</button>
+					<button id="start" class="btn btn-primary">Start</button>
+				</div>
 			</div>
-			<div class="game-controller-container">
-				<button id="reset" class="btn btn-primary">Reset</button>
-				<button id="start" class="btn btn-primary">Start</button>
-			</div>
-			<div class="statistics">
-				<p>
-					You have <span id="max-time"></span>seconds.
-					Current time spent: 
-					<span id="time-count"></span> s
+			<div class="statistics hidden">
+				<p class="clicker">
+					You have clicked <span id="click-count">0</span> times. (Attempt in
+					matching)
+				</p>
+				<p class="matched">
+					Currently Matched Pairs: <span id="current-match">0</span>
+				</p>
+				<p class="total-match">Total Pairs: <span id="max-match"></span></p>
+				<p class="timer">
+					Total Time Remaining: <span id="time-count">0</span> s
 				</p>
 			</div>
 			<div id="pokemon-container"></div>
 		</div>
+
 		<template class="card-template">
 			<div class="gamecard">
 				<img class="front-face" />
