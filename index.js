@@ -38,14 +38,28 @@ async function getRandomPokemon(number, pokemons) {
 async function initPokemonCards(difficulty, pokemons) {
 	const pokemonList = await getRandomPokemon(difficulty, pokemons);
 	const finalPokemon = shuffle(pokemonList);
-
+	let widthCard = 0;
+	let marginBottom = 0;
 	const template = document.querySelector(".card-template");
 	const destination = document.querySelector("#pokemon-container");
+	
+	if (difficulty == EASY) {
+		widthCard = '33.3%';
+		marginBottom = '5%'
+	} else if (difficulty == MEDIUM){
+		widthCard = '25%';
+		marginBottom = '15%';
+	} else if (difficulty == HARD) {
+		widthCard = '16.66%';
+		marginBottom = '20%';
+	}
 
 	for (let i = 0; i < finalPokemon.length; i++) {
 		const clone = template.content.cloneNode(true);
 
 		clone.querySelector(".front-face").id = `pokemon-${i}`;
+		clone.querySelector(".gamecard").style.width = widthCard;
+		clone.querySelector(".gamecard").style.margin = `0 0 ${marginBottom} 0`;
 		clone.querySelector(".front-face").src =
 			finalPokemon[i].sprites.other["official-artwork"].front_default;
 		destination.appendChild(clone);
@@ -210,7 +224,7 @@ function gameSession(difficulty) {
 		document.getElementById("time-count").textContent = maxTime - time;
 
 		// Power Up
-		if (time % 10 == 0 && time != 0) {
+		if (time % 20 == 0 && time != 0) {
 			alert("Power up!");
 			setTimeout(() => {
 				document.querySelectorAll("div:not(.matched)").forEach( card => {
