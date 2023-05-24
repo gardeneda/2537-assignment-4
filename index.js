@@ -256,6 +256,8 @@ function gameSession(difficulty) {
 		document.querySelector('#pokemon-container').innerHTML = "";
 		document.getElementById("start").classList.remove("hidden");
 		document.querySelector(".statistics").classList.add("hidden");
+		matched = 0;
+		numClicks = 0;
 		clearInterval(interval);
 	})
 }
